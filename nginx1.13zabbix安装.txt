@@ -1,14 +1,14 @@
-°²×°nginxÖ®Ç°ÒÀÀµ°ü
+å®‰è£…nginxä¹‹å‰ä¾èµ–åŒ…
 yum install gcc gcc++ cmake pcre pcre-devel zlib zlib-devel -y
 
-Ê¹ÓÃÄ¬ÈÏÅäÖÃ²ÎÊı°²×°nginx
+ä½¿ç”¨é»˜è®¤é…ç½®å‚æ•°å®‰è£…nginx
  
 ./configure
 
 make && make install
 
 
-°²×°½á¹û£º
+å®‰è£…ç»“æœï¼š
   nginx path prefix: "/usr/local/nginx"
   nginx binary file: "/usr/local/nginx/sbin/nginx"
   nginx modules path: "/usr/local/nginx/modules"
@@ -24,16 +24,16 @@ make && make install
   nginx http scgi temporary files: "scgi_temp"
 
 
----------------------------php°²×°
+---------------------------phpå®‰è£…
 
-°²×°ÒÀÀµ°ü
+å®‰è£…ä¾èµ–åŒ…
 yum install gcc make gd-devel libjpeg-devel libpng-devel libxml2-devel bzip2-devel libcurl-devel -y
 
-ÏÂÔØphpÔ´Âë
+ä¸‹è½½phpæºç 
 
 wget http://cn2.php.net/distributions/php-5.5.38.tar.gz
 
-ÅäÖÃphp²ÎÊı
+é…ç½®phpå‚æ•°
 
 ./configure  --prefix=/usr/local/php-5.5.38 \
 --with-config-file-path=/usr/local/php-5.5.38/etc --with-bz2 --with-curl \
@@ -45,14 +45,14 @@ wget http://cn2.php.net/distributions/php-5.5.38.tar.gz
 --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-mysql=mysqlnd \
 --enable-dom --enable-xml --enable-fpm --with-libdir=lib64 --enable-bcmath
 
-°²×°
+å®‰è£…
 make && make install 
 
-ÅäÖÃÎÄ¼ş¸ü¸ÄÊÖ¶¯¸´ÖÆ
+é…ç½®æ–‡ä»¶æ›´æ”¹æ‰‹åŠ¨å¤åˆ¶
 cp php.ini-production /usr/local/php-5.5.38/etc/php.ini
 cp /usr/local/php-5.5.38/etc/php-fpm.conf.default /usr/local/php-5.5.38/etc/php-fpm.conf
 
-ĞŞ¸ÄÏà¹Ø²ÎÊıÎªzabbix×¼±¸
+ä¿®æ”¹ç›¸å…³å‚æ•°ä¸ºzabbixå‡†å¤‡
  max_execution_time = 300
  memory_limit = 128M
  post_max_size = 16M
@@ -60,8 +60,8 @@ cp /usr/local/php-5.5.38/etc/php-fpm.conf.default /usr/local/php-5.5.38/etc/php-
  max_input_time = 300
  date.timezone = PRC
 
-È»ºóÅäÖÃnginxÅäÖÃÎÄ¼ş£¬Ê¹ÆäÖÁ´Ëphp½âÎö£¬server¶ÎÌí¼ÓÈçÏÂ´úÂë
-nginx.conf ×Ô´øµÄÅäÖÃìî³ı×¢ÊÍºóÎŞ·¨Ê¹ÓÃ¡£
+ç„¶åé…ç½®nginxé…ç½®æ–‡ä»¶ï¼Œä½¿å…¶è‡³æ­¤phpè§£æï¼Œserveræ®µæ·»åŠ å¦‚ä¸‹ä»£ç 
+nginx.conf è‡ªå¸¦çš„é…ç½®ç¥›é™¤æ³¨é‡Šåæ— æ³•ä½¿ç”¨ã€‚
 
 location ~ .*\.(php)?$
 {
@@ -76,104 +76,104 @@ fastcgi_pass 127.0.0.1:9000;
  
 }
 
-²âÊÔnginxÊÇ·ñÖ»´Ëphp¡£º¯Êıphpinfo();
+æµ‹è¯•nginxæ˜¯å¦åªæ­¤phpã€‚å‡½æ•°phpinfo();
 
-------------------°²×°mysql·şÎñÆ÷ÎªÁË¿ìËÙ°²×°ÕâÀïÊ¹ÓÃyum°²×°5.6°æ±¾
+------------------å®‰è£…mysqlæœåŠ¡å™¨ä¸ºäº†å¿«é€Ÿå®‰è£…è¿™é‡Œä½¿ç”¨yumå®‰è£…5.6ç‰ˆæœ¬
 
-°²×°¹ı³Ì£º
-rpm°üÏÂÔØ£º
+å®‰è£…è¿‡ç¨‹ï¼š
+rpmåŒ…ä¸‹è½½ï¼š
 https://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-server-5.6.36-1.linux_glibc2.5.x86_64.rpm
 https://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-client-5.6.36-1.linux_glibc2.5.x86_64.rpm
 https://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-devel-5.6.36-1.linux_glibc2.5.x86_64.rpm
 
-È«²¿Ê¹ÓÃrpm -ivh°²×°
+å…¨éƒ¨ä½¿ç”¨rpm -ivhå®‰è£…
 
-Æô¶¯Êı¾İ¿â
+å¯åŠ¨æ•°æ®åº“
 
 service mysql start
 
-Ìø¹ıÈ»ºóÖØÖÃ¼´¿É¡£
+è·³è¿‡ç„¶åé‡ç½®å³å¯ã€‚
 mysql -u root --skip-password
 
-ÖØÖÃrootÃÜÂë
-set PASSWORD = PASSWORD('vkd2015');
-FLUSH PRIVILEGES;Ë¢ĞÂÈ¨ÏŞÊ¹ÆäÉúĞ§
+é‡ç½®rootå¯†ç 
+set PASSWORD = PASSWORD('new password');
+FLUSH PRIVILEGES;åˆ·æ–°æƒé™ä½¿å…¶ç”Ÿæ•ˆ
 
 
-´´½¨ÕË»§
-CREATE USER ZABBIX IDENTIFIED BY 'vkd2015';
+åˆ›å»ºè´¦æˆ·
+CREATE USER ZABBIX IDENTIFIED BY 'password';
 
-ÊÚÈ¨ÕË»§
+æˆæƒè´¦æˆ·
 
-GRANT ALL ON zabbix.* to 'ZABBIX'@'localhost'IDENTIFIED BY 'vkd2015';
+GRANT ALL ON zabbix.* to 'ZABBIX'@'localhost'IDENTIFIED BY 'password';
 
-ÕâÀïÎÒ×øÁËÒ»¸öÊéÊı¾İ¿âÄ¿Â¼µÄ¸Ğ¸Å£¬ÌáÊ¾sockÎÄ¼ş²»´æÔÚ£¬×öÒ»¸öÈíÁ¬½Ó¼´¿É¡£
-
-
+è¿™é‡Œæˆ‘åäº†ä¸€ä¸ªä¹¦æ•°æ®åº“ç›®å½•çš„æ„Ÿæ¦‚ï¼Œæç¤ºsockæ–‡ä»¶ä¸å­˜åœ¨ï¼Œåšä¸€ä¸ªè½¯è¿æ¥å³å¯ã€‚
 
 
---------------------zabbix°²×°
-ÒÀÀµ°ü°²×°
+
+
+--------------------zabbixå®‰è£…
+ä¾èµ–åŒ…å®‰è£…
 yum install net-snmp-devel libxml2-devel libcurl-devel -y
 
-Ôö¼ÓÊı¾İ¿â¼°Ê¹ÓÃÓÃ»§
+å¢åŠ æ•°æ®åº“åŠä½¿ç”¨ç”¨æˆ·
 
-ÔİÂÔ
+æš‚ç•¥
 
-srcÔ´Âë°²×°
+srcæºç å®‰è£…
 https://ncu.dl.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/3.2.6/zabbix-3.2.6.tar.gz
 
 
 
-±àÒë°²×°(with-mysqlÑ¡ÏîĞèÒªmysql-develÖ§³Ö£¬±£³ÖÓëmysql°æ±¾Ò»ÖÂ)
+ç¼–è¯‘å®‰è£…(with-mysqlé€‰é¡¹éœ€è¦mysql-develæ”¯æŒï¼Œä¿æŒä¸mysqlç‰ˆæœ¬ä¸€è‡´)
  ./configure --prefix=/usr/local/zabbix --enable-server --enable-agent --with-mysql=/usr/bin/mysql_config --with-net-snmp --with-libcurl
 
 
 
-Èç¹û³ö´í°´ÕÕÌáÊ¾°Ù¶È½â¾ö£¬È±ÉÙmysql_configÊÇÂ·¾¶ÎÊÌâ£¬ÕÒ²»µ½libmysqlclient.so ÊÇÎ´°²×°mysqlsharelib£¬¹ÙÍøÏÂÔØ°²×°¡£
+å¦‚æœå‡ºé”™æŒ‰ç…§æç¤ºç™¾åº¦è§£å†³ï¼Œç¼ºå°‘mysql_configæ˜¯è·¯å¾„é—®é¢˜ï¼Œæ‰¾ä¸åˆ°libmysqlclient.so æ˜¯æœªå®‰è£…mysqlsharelibï¼Œå®˜ç½‘ä¸‹è½½å®‰è£…ã€‚
 
-ÎªzabbixÊı¾İ´æ´¢×øÊı¾İ¿âÌí¼Ó×¼±¸
+ä¸ºzabbixæ•°æ®å­˜å‚¨åæ•°æ®åº“æ·»åŠ å‡†å¤‡
 create database zabbix default character set  utf8 collate utf8_bin;
-Ìí¼Ó·ÃÎÊÊı¾İ¿âµÄÓÃ»§ºÍÃÜÂë£»
-grant all on ZABBIX.* to ZABBIX@localhost identified by 'vkd2015';
-µ¼ÈëzabbixµÄ±í
+æ·»åŠ è®¿é—®æ•°æ®åº“çš„ç”¨æˆ·å’Œå¯†ç ï¼›
+grant all on ZABBIX.* to ZABBIX@localhost identified by 'password';
+å¯¼å…¥zabbixçš„è¡¨
 tar xvf zabbix-3.2.6.tar.gz -C /usr/local/src/ ;cd /usr/local/src/zabbix-3.2.6
 
-Èı¸ö±í°´ÒÔÏÂË³ĞòÈ«²¿µ¼Èë£º
+ä¸‰ä¸ªè¡¨æŒ‰ä»¥ä¸‹é¡ºåºå…¨éƒ¨å¯¼å…¥ï¼š
 mysql -uzabbix -pzabbix zabbix < database/mysql/schema.sql
 mysql -uzabbix -pzabbix zabbix < database/mysql/images.sql
 mysql -uzabbix -pzabbix zabbix < database/mysql/data.sql
 
 
-ĞŞ¸ÄÅäÖÃÎÄ¼ş£º
+ä¿®æ”¹é…ç½®æ–‡ä»¶ï¼š
 
 
-use/local/zabbix/etc/zabbix_server.confµÄ
+use/local/zabbix/etc/zabbix_server.confçš„
 DBName
 DBUesr
 DBPassword
 DBPord
-ËÄ¸öÖµ£¬°´ÕÕÄãµÄÊµ¼ÊÇé¿öÌîĞ´
+å››ä¸ªå€¼ï¼ŒæŒ‰ç…§ä½ çš„å®é™…æƒ…å†µå¡«å†™
 
-Æô¶¯server
+å¯åŠ¨server
 /usr/local/zabbix/sbin/zabbix_server
 
-¿½±´Ç°¶ËÎÄ¼ş£¬ÔÚzabbixÔ´´úÂëÀïÃæÕÒ
+æ‹·è´å‰ç«¯æ–‡ä»¶ï¼Œåœ¨zabbixæºä»£ç é‡Œé¢æ‰¾
  cp -rp frontends/php/* /data/site/monitor.ttlsa.com/zabbix
 
 
-ĞŞ¸ÄnginxµÄÅäÖÃÎÄ¼ş£¬¿ªÊ¼·ÃÎÊzabbixÄ¿Â¼¿ªÊ¼°²×°£¬ÌîÈëÊı¾İ¿âµÄÅäÖÃÑ¡Ïî¡£
-°²×°okÈ«²¿Íê³Éºó£¬ÊäÈëÍøÖ·¿ªÊ¼·ÃÎÊ  
-Ä¬ÈÏÕÊºÅÃÜÂëadmin zabbix
+ä¿®æ”¹nginxçš„é…ç½®æ–‡ä»¶ï¼Œå¼€å§‹è®¿é—®zabbixç›®å½•å¼€å§‹å®‰è£…ï¼Œå¡«å…¥æ•°æ®åº“çš„é…ç½®é€‰é¡¹ã€‚
+å®‰è£…okå…¨éƒ¨å®Œæˆåï¼Œè¾“å…¥ç½‘å€å¼€å§‹è®¿é—®  
+é»˜è®¤å¸å·å¯†ç admin zabbix
 
 
-------------zabbix¿Í»§¶ËµÄ°²×°
+------------zabbixå®¢æˆ·ç«¯çš„å®‰è£…
 
-ÒÀÈ»²ÉÈ¡±àÒë°²×°µÄ·½Ê½£¬±àÒë°²×°»¹ÊÇÍ³Ò»µÄÔ´Âë°ü
-Ö»²»¹ıÎÒÃÇÖ»enable agent¹¦ÄÜ¼´¿É£¬È»ºóÅäÖÃ£¬Æô¶¯·şÎñ¡£
+ä¾ç„¶é‡‡å–ç¼–è¯‘å®‰è£…çš„æ–¹å¼ï¼Œç¼–è¯‘å®‰è£…è¿˜æ˜¯ç»Ÿä¸€çš„æºç åŒ…
+åªä¸è¿‡æˆ‘ä»¬åªenable agentåŠŸèƒ½å³å¯ï¼Œç„¶åé…ç½®ï¼Œå¯åŠ¨æœåŠ¡ã€‚
 
 
-°²×°
+å®‰è£…
 
 wget https://ncu.dl.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/3.2.6/zabbix-3.2.6.tar.gz
 tar -xzvf zabbix-3.2.6.tar.gz
@@ -183,28 +183,28 @@ make && make install
 
 
 
-ÅäÖÃ
+é…ç½®
 
 vi /usr/local/zabbix-3.2.6/etc/zabbix_agentd.conf
 
 sed -i 's/127.0.0.1/10.0.0.4/g' /usr/local/zabbix-3.2.6/etc/zabbix_agentd.conf
 
 
-ĞŞ¸ÄÄãµÄ·şÎñÆ÷ÈçÏÂ²ÎÊı£¬hostname¿ÉËæÒâ
+ä¿®æ”¹ä½ çš„æœåŠ¡å™¨å¦‚ä¸‹å‚æ•°ï¼Œhostnameå¯éšæ„
 Server=10.0.0.4
 ServerActive=10.0.0.4
 Hostname=zabbix
 
-Æô¶¯agent
+å¯åŠ¨agent
 
 /usr/local/zabbix-3.2.6/sbin/zabbix_agentd
 
-sedÃüÁîÅúÁ¿ĞŞ¸ÄÅäÖÃÎÄ¼şip
+sedå‘½ä»¤æ‰¹é‡ä¿®æ”¹é…ç½®æ–‡ä»¶ip
 
 sed -i 's/127.0.0.1/10.0.0.4/g' /usr/local/zabbix-3.2.6/etc/zabbix_agentd.conf
 
 
-Ö»´Ë°²×°Íê³É£¬ºÄÊ±7¸öĞ¡Ê±¡£
+åªæ­¤å®‰è£…å®Œæˆï¼Œè€—æ—¶7ä¸ªå°æ—¶ã€‚
 
 
 
