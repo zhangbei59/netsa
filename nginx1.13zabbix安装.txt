@@ -1,0 +1,212 @@
+安装nginx之前依赖包
+yum install gcc gcc++ cmake pcre pcre-devel zlib zlib-devel -y
+
+使用默认配置参数安装nginx
+ 
+./configure
+
+make && make install
+
+
+安装结果：
+  nginx path prefix: "/usr/local/nginx"
+  nginx binary file: "/usr/local/nginx/sbin/nginx"
+  nginx modules path: "/usr/local/nginx/modules"
+  nginx configuration prefix: "/usr/local/nginx/conf"
+  nginx configuration file: "/usr/local/nginx/conf/nginx.conf"
+  nginx pid file: "/usr/local/nginx/logs/nginx.pid"
+  nginx error log file: "/usr/local/nginx/logs/error.log"
+  nginx http access log file: "/usr/local/nginx/logs/access.log"
+  nginx http client request body temporary files: "client_body_temp"
+  nginx http proxy temporary files: "proxy_temp"
+  nginx http fastcgi temporary files: "fastcgi_temp"
+  nginx http uwsgi temporary files: "uwsgi_temp"
+  nginx http scgi temporary files: "scgi_temp"
+
+
+---------------------------php安装
+
+安装依赖包
+yum install gcc make gd-devel libjpeg-devel libpng-devel libxml2-devel bzip2-devel libcurl-devel -y
+
+下载php源码
+
+wget http://cn2.php.net/distributions/php-5.5.38.tar.gz
+
+配置php参数
+
+./configure  --prefix=/usr/local/php-5.5.38 \
+--with-config-file-path=/usr/local/php-5.5.38/etc --with-bz2 --with-curl \
+--enable-ftp --enable-sockets --disable-ipv6 --with-gd \
+--with-jpeg-dir=/usr/local --with-png-dir=/usr/local \
+--with-freetype-dir=/usr/local --enable-gd-native-ttf \
+--with-iconv-dir=/usr/local --enable-mbstring --enable-calendar \
+--with-gettext --with-libxml-dir=/usr/local --with-zlib \
+--with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-mysql=mysqlnd \
+--enable-dom --enable-xml --enable-fpm --with-libdir=lib64 --enable-bcmath
+
+安装
+make && make install 
+
+配置文件更改手动复制
+cp php.ini-production /usr/local/php-5.5.38/etc/php.ini
+cp /usr/local/php-5.5.38/etc/php-fpm.conf.default /usr/local/php-5.5.38/etc/php-fpm.conf
+
+修改相关参数为zabbix准备
+ max_execution_time = 300
+ memory_limit = 128M
+ post_max_size = 16M
+ upload_max_filesize = 2M
+ max_input_time = 300
+ date.timezone = PRC
+
+然后配置nginx配置文件，使其至此php解析，server段添加如下代码
+nginx.conf 自带的配置祛除注释后无法使用。
+
+location ~ .*\.(php)?$
+{
+expires -1s;
+try_files $uri =404;
+fastcgi_split_path_info ^(.+\.php)(/.+)$;
+include fastcgi_params;
+fastcgi_param PATH_INFO $fastcgi_path_info;
+fastcgi_index index.php;
+fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+fastcgi_pass 127.0.0.1:9000;
+ 
+}
+
+测试nginx是否只此php。函数phpinfo();
+
+------------------安装mysql服务器为了快速安装这里使用yum安装5.6版本
+
+安装过程：
+rpm包下载：
+https://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-server-5.6.36-1.linux_glibc2.5.x86_64.rpm
+https://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-client-5.6.36-1.linux_glibc2.5.x86_64.rpm
+https://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-devel-5.6.36-1.linux_glibc2.5.x86_64.rpm
+
+全部使用rpm -ivh安装
+
+启动数据库
+
+service mysql start
+
+跳过然后重置即可。
+mysql -u root --skip-password
+
+重置root密码
+set PASSWORD = PASSWORD('vkd2015');
+FLUSH PRIVILEGES;刷新权限使其生效
+
+
+创建账户
+CREATE USER ZABBIX IDENTIFIED BY 'vkd2015';
+
+授权账户
+
+GRANT ALL ON zabbix.* to 'ZABBIX'@'localhost'IDENTIFIED BY 'vkd2015';
+
+这里我坐了一个书数据库目录的感概，提示sock文件不存在，做一个软连接即可。
+
+
+
+
+--------------------zabbix安装
+依赖包安装
+yum install net-snmp-devel libxml2-devel libcurl-devel -y
+
+增加数据库及使用用户
+
+暂略
+
+src源码安装
+https://ncu.dl.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/3.2.6/zabbix-3.2.6.tar.gz
+
+
+
+编译安装(with-mysql选项需要mysql-devel支持，保持与mysql版本一致)
+ ./configure --prefix=/usr/local/zabbix --enable-server --enable-agent --with-mysql=/usr/bin/mysql_config --with-net-snmp --with-libcurl
+
+
+
+如果出错按照提示百度解决，缺少mysql_config是路径问题，找不到libmysqlclient.so 是未安装mysqlsharelib，官网下载安装。
+
+为zabbix数据存储坐数据库添加准备
+create database zabbix default character set  utf8 collate utf8_bin;
+添加访问数据库的用户和密码；
+grant all on ZABBIX.* to ZABBIX@localhost identified by 'vkd2015';
+导入zabbix的表
+tar xvf zabbix-3.2.6.tar.gz -C /usr/local/src/ ;cd /usr/local/src/zabbix-3.2.6
+
+三个表按以下顺序全部导入：
+mysql -uzabbix -pzabbix zabbix < database/mysql/schema.sql
+mysql -uzabbix -pzabbix zabbix < database/mysql/images.sql
+mysql -uzabbix -pzabbix zabbix < database/mysql/data.sql
+
+
+修改配置文件：
+
+
+use/local/zabbix/etc/zabbix_server.conf的
+DBName
+DBUesr
+DBPassword
+DBPord
+四个值，按照你的实际情况填写
+
+启动server
+/usr/local/zabbix/sbin/zabbix_server
+
+拷贝前端文件，在zabbix源代码里面找
+ cp -rp frontends/php/* /data/site/monitor.ttlsa.com/zabbix
+
+
+修改nginx的配置文件，开始访问zabbix目录开始安装，填入数据库的配置选项。
+安装ok全部完成后，输入网址开始访问  
+默认帐号密码admin zabbix
+
+
+------------zabbix客户端的安装
+
+依然采取编译安装的方式，编译安装还是统一的源码包
+只不过我们只enable agent功能即可，然后配置，启动服务。
+
+
+安装
+
+wget https://ncu.dl.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/3.2.6/zabbix-3.2.6.tar.gz
+tar -xzvf zabbix-3.2.6.tar.gz
+cd zabbix-3.2.6
+./configure --prefix=/usr/local/zabbix-3.2.6/ --enable-agent
+make && make install
+
+
+
+配置
+
+vi /usr/local/zabbix-3.2.6/etc/zabbix_agentd.conf
+
+sed -i 's/127.0.0.1/10.0.0.4/g' /usr/local/zabbix-3.2.6/etc/zabbix_agentd.conf
+
+
+修改你的服务器如下参数，hostname可随意
+Server=10.0.0.4
+ServerActive=10.0.0.4
+Hostname=zabbix
+
+启动agent
+
+/usr/local/zabbix-3.2.6/sbin/zabbix_agentd
+
+sed命令批量修改配置文件ip
+
+sed -i 's/127.0.0.1/10.0.0.4/g' /usr/local/zabbix-3.2.6/etc/zabbix_agentd.conf
+
+
+只此安装完成，耗时7个小时。
+
+
+
+
+
